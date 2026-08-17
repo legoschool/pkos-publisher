@@ -1,0 +1,4 @@
+:root{--게시-바탕:#fbf7fb;--게시-종이:#fff;--게시-글:#3b3340;--게시-흐린글:#8a7f92;--게시-선:#eadfee;
+--게시-강조:#a06cd5;--게시-강조바탕:#f1e8f8;--게시-모서리:18px;--게시-그림자:0 6px 20px rgba(120,80,160,.10);--게시-카드바탕:#fff;--게시-카드안쪽:24px 26px;--게시-제목글꼴:"Pretendard",sans-serif;--게시-본문글꼴:"Pretendard",sans-serif}
+.pastel-mint{--게시-바탕:#f3faf7;--게시-강조:#3aa07a;--게시-강조바탕:#e2f4ec;--게시-선:#d6ebe2}
+.pastel-peach{--게시-바탕:#fff6f1;--게시-강조:#e07a4f;--게시-강조바탕:#fde9df;--게시-선:#f3dccf}

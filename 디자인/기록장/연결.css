@@ -1,0 +1,70 @@
+/* ============================================================
+   기록장 — 구글 기록장(05_도구개발/pkems_구글 기록장/index.html)과 같은 톤.
+   옅은 청회색 바탕 · 흰 카드(모서리 14px, 부드러운 그림자) · 파랑 강조 · Pretendard.
+   값은 기록장 index.html 의 :root 변수에서 그대로 옮겼다.
+     --bg #f5f7fb  --panel #fff  --ink #1b2130  --ink-soft #667085  --line #e3e8f2
+     --brand #2f5fd6  --brand-soft #eaf0ff  --radius 14px
+   다크: --bg #12161f  --panel #1b202b  --ink #e8ecf4  --ink-soft #98a2b3  --line #2b3242
+         --brand #7d9dff  --brand-soft #232c44
+   결(갈래): 자동(시스템 따라감, 기본) · 밝게 · 어둡게
+   ============================================================ */
+:root{
+  --기록장-bg:#f5f7fb; --기록장-panel:#fff; --기록장-ink:#1b2130; --기록장-ink-soft:#667085;
+  --기록장-line:#e3e8f2; --기록장-line-soft:#eef1f7; --기록장-brand:#2f5fd6; --기록장-brand-soft:#eaf0ff;
+  --기록장-shadow:0 1px 3px rgba(20,30,60,.06), 0 8px 24px rgba(20,30,60,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not(.기록장-밝게){
+    --기록장-bg:#12161f; --기록장-panel:#1b202b; --기록장-ink:#e8ecf4; --기록장-ink-soft:#98a2b3;
+    --기록장-line:#2b3242; --기록장-line-soft:#232936; --기록장-brand:#7d9dff; --기록장-brand-soft:#232c44;
+    --기록장-shadow:0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root.기록장-어둡게{
+  --기록장-bg:#12161f; --기록장-panel:#1b202b; --기록장-ink:#e8ecf4; --기록장-ink-soft:#98a2b3;
+  --기록장-line:#2b3242; --기록장-line-soft:#232936; --기록장-brand:#7d9dff; --기록장-brand-soft:#232c44;
+  --기록장-shadow:0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+}
+
+:root{
+  --게시-바탕:      var(--기록장-bg);
+  --게시-종이:      var(--기록장-panel);
+  --게시-글:        var(--기록장-ink);
+  --게시-흐린글:    var(--기록장-ink-soft);
+  --게시-강조:      var(--기록장-brand);
+  --게시-강조바탕:  var(--기록장-brand-soft);
+  --게시-선:        var(--기록장-line);
+
+  --게시-제목글꼴:  "Pretendard","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  --게시-본문글꼴:  "Pretendard","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  --게시-제목굵기:  800;
+  --게시-글크기:    16.5px; --게시-줄간:1.8; --게시-자간:-.015em; --게시-배율:1;
+
+  --게시-폭:        760px; --게시-사이:32px;
+  --게시-모서리:    14px; --게시-사진모서리:10px;
+  --게시-테두리:    1px solid var(--기록장-line);
+  --게시-카드테두리: 1px solid var(--기록장-line);
+  --게시-그림자:    var(--기록장-shadow);
+  --게시-카드바탕:  var(--기록장-panel);
+  --게시-카드안쪽:  22px 26px;
+  --게시-표지위아래: 40px 0 0;
+}
+
+/* 기록장처럼 — 표지도 흰 카드, 집계는 알약, 링크는 파랑 */
+.표지{background:var(--기록장-panel); border:1px solid var(--기록장-line); border-radius:14px;
+      box-shadow:var(--기록장-shadow); padding:34px 34px 26px; margin-bottom:var(--게시-사이)}
+.표지 h1{font-size:calc(2rem * var(--게시-배율))}
+.표지 .집계{border-top:1px solid var(--기록장-line-soft); gap:8px}
+.표지 .집계 span{display:inline-block; padding:3px 11px; border:1px solid var(--기록장-line); border-radius:999px; background:var(--기록장-bg); font-size:.8rem}
+.제작노트{background:var(--기록장-brand-soft); border-left:0; border:1px solid var(--기록장-line); border-radius:14px}
+.목차{border-radius:14px}
+.자료 h2.제목{font-size:calc(1.35rem * var(--게시-배율))}
+.자료 .머리{border-bottom:0; padding-bottom:0}
+.자료.강조{background:transparent; padding:0; margin-left:0; margin-right:0}
+.자료.강조 .몸{border-color:var(--기록장-brand); box-shadow:0 0 0 3px var(--기록장-brand-soft), var(--기록장-shadow)}
+.붙임, .게시본칸, details.자료 > summary.카드{border-radius:14px}
+.게시본칸 .그림{background:var(--기록장-line-soft)}
+blockquote{border-left-color:var(--기록장-brand); background:var(--기록장-bg); padding:14px 18px; border-radius:0 10px 10px 0; font-family:inherit; font-size:1em}
+.자료 .몸 code{background:var(--기록장-bg)}
+.자료 .몸 pre.코드{background:var(--기록장-bg)}
+.장머리{border-bottom-color:var(--기록장-brand)}
