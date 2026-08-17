@@ -11,6 +11,7 @@
    ============================================================ */
 
 import { 손질항목, 메모줄쓰기 } from './제작.js';
+import { 회사들, 어느회사 } from './회사.js';
 
 export const 기본모델 = 'claude-opus-5';
 
@@ -88,7 +89,24 @@ ${노트 || '(없음)'}`;
   };
 }
 
-/* ---------- 응답 다듬기 ---------- */
+/* ---------- 어느 회사 키인지 알아본다 ----------
+   사람에게 "어디 키인가요?" 를 묻지 않는다. 키 모양만 보면 안다.
+   회사 목록은 공용/회사.js 한 곳에만 적혀 있다. */
+export function 어디키(키){
+  const 곳 = 어느회사(키);
+  const c = 회사들[곳];
+  return { 곳, 모델: c?.모델 || '', 바탕: c?.바탕 || '', 방식: c?.방식 || '' };
+}
+
+/* ---------- 제안 줄 거르기 (어느 회사 답이든 여기를 지난다) ----------
+   어휘 밖 열쇠는 버린다. 몇 개를 버렸는지도 같이 돌려준다 (원칙 6). */
+export function 줄거르기(값){
+  const 줄 = (값.줄 || []).filter(r => r && 허용열쇠.includes(String(r.열쇠).trim()) && String(r.값 || '').trim())
+    .map(r => ({ 열쇠: String(r.열쇠).trim(), 값: String(r.값).trim(), 이유: String(r.이유 || '').trim() }));
+  return { 줄, 못한것: (값.못한것 || []).map(String), 버림: (값.줄 || []).length - 줄.length };
+}
+
+/* ---------- 응답 다듬기 (앤트로픽) ---------- */
 export function 응답읽기(응답){
   if (!응답 || 응답.type === 'error') {
     const m = 응답 && 응답.error ? 응답.error.message : '알 수 없는 오류';
@@ -99,10 +117,7 @@ export function 응답읽기(응답){
   const 글 = (응답.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
   let 값;
   try { 값 = JSON.parse(글); } catch { throw new Error('응답을 JSON 으로 읽지 못했습니다: ' + 글.slice(0, 200)); }
-  const 줄 = (값.줄 || []).filter(r => r && 허용열쇠.includes(String(r.열쇠).trim()) && String(r.값 || '').trim())
-    .map(r => ({ 열쇠: String(r.열쇠).trim(), 값: String(r.값).trim(), 이유: String(r.이유 || '').trim() }));
-  const 버림 = (값.줄 || []).length - 줄.length;
-  return { 줄, 못한것: (값.못한것 || []).map(String), 버림,
+  return { ...줄거르기(값),
            쓴토큰: 응답.usage ? (응답.usage.input_tokens || 0) + (응답.usage.output_tokens || 0) : 0 };
 }
 
@@ -123,6 +138,42 @@ export async function 해석하기({ 노트, 자료들, 메모, 열쇠, 모델, 
   try { 응답 = await r.json(); } catch { throw new Error('응답을 읽지 못했습니다 (HTTP ' + r.status + ')'); }
   if (!r.ok && !(응답 && 응답.type === 'error')) throw new Error('HTTP ' + r.status);
   return 응답읽기(응답);
+}
+
+/* ---------- 실제 호출 (업스테이지 솔라) ----------
+   같은 물음(요청만들기)을 OpenAI 모양 API 로 보낸다. 알맹이는 공용/솔라핵심.js.
+   솔라핵심은 브라우저·Node 어디서나 돌고 키를 스스로 찾지 않는다.              */
+export async function 해석하기솔라({ 노트, 자료들, 메모, 열쇠, 모델, 바탕 }){
+  if (!열쇠) throw new Error('API 키가 없습니다');
+  const { 물어보기 } = await import('./솔라핵심.js');
+  const 어디 = 어디키(열쇠);
+  const 몸 = 요청만들기({ 노트, 자료들, 메모 });
+  const r = await 물어보기({
+    키: 열쇠, 바탕: 바탕 || 어디.바탕, 모델: 모델 || 어디.모델 || 'solar-pro3',
+    체계: 몸.system,
+    물음: 몸.messages[0].content,
+    스키마: {
+      type: 'object', additionalProperties: false, required: ['줄', '못한것'],
+      properties: {
+        줄: { type: 'array', items: {
+          type: 'object', additionalProperties: false, required: ['열쇠', '값', '이유'],
+          properties: { 열쇠: { type:'string' }, 값: { type:'string' }, 이유: { type:'string' } } } },
+        못한것: { type: 'array', items: { type: 'string' } },
+      },
+    },
+    최대토큰: 4096, 조용히: true,
+  });
+  return { ...줄거르기(r.값 || {}), 쓴토큰: (r.쓴토큰?.들어감 || 0) + (r.쓴토큰?.나옴 || 0) };
+}
+
+/* ---------- 어느 회사든 알아서 ----------
+   키 모양을 보고 맞는 곳으로 보낸다. 사람은 키만 넣으면 된다. */
+export async function 해석하기알아서(옵션){
+  const { 곳, 방식 } = 어디키(옵션.열쇠);
+  if (방식 === 'openai')   return 해석하기솔라(옵션);        // 업스테이지 · 제미나이
+  if (방식 === '앤트로픽') return 해석하기({ ...옵션, 브라우저: 옵션.브라우저 ?? true });
+  throw new Error('어느 회사 키인지 모르겠습니다. 쓸 수 있는 키: ' +
+    Object.values(회사들).map(c => c.이름 + '(' + c.예 + ')').join(' · '));
 }
 
 /* ---------- 제안을 _메모.txt 에 적용 (윗단만 고치고 아랫단은 그대로) ---------- */

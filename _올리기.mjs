@@ -14,6 +14,7 @@ import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { 메모읽기 } from './공용/제작.js';
+import { 키섞였나 } from './공용/열쇠.mjs';
 
 const 원본 = dirname(fileURLToPath(import.meta.url));
 const 배포 = process.env.배포폴더 || join(homedir(), '게시본-깃허브');
@@ -53,9 +54,11 @@ for (const e of await readdir(join(원본, '디자인'), { withFileTypes:true })
 for (const g of 공개) await 담기('게시본/' + g.이름, '공개');
 for (const g of 비공개) 뺀.push('게시본/' + g.이름 + '  (공개: 끄기 — 폴더 통째로 뺌)');
 await 담기('통합사이트');
-for (const f of ['제작기.html', '_전체만들기.mjs', '_미리보기만들기.mjs', '_메모해석.mjs', '_올리기.mjs', '_구상안.md', '_인수인계서.md']) await 담기(f);
+for (const f of ['제작기.html', '_전체만들기.mjs', '_미리보기만들기.mjs', '_메모해석.mjs', '_올리기.mjs',
+                 '_탐색.mjs', '_분류.mjs', '_재구성.mjs', '_구상안.md', '_인수인계서.md', 'README.md']) await 담기(f);
 await 담기('_시험');
 뺀.push('_미리보기/  (비교용 — 비공개 자료가 섞일 수 있어 뺌. 필요하면 배포 사본에서 다시 뽑기)');
+뺀.push('_탐색결과/  (탐색·분류 결과 — 아직 공개하지 않은 자료의 제목·발췌가 들어 있어 뺌)');
 
 /* 공개 게시본이 빠진 디자인을 쓰면 알려 준다 */
 for (const g of 공개) if (제외디자인.includes(g.디자인)) 뺀.push('⚠ 공개 게시본 「' + g.이름 + '」 이 제외된 디자인 「' + g.디자인 + '」 을 씀 — 올라가면 기본 디자인으로 보임');
@@ -96,18 +99,47 @@ jobs:
         uses: actions/deploy-pages@v4
 `, 'utf8');
 await writeFile(join(배포, '.gitignore'), `# 배포 사본은 _올리기.mjs 가 매번 새로 만든다. 여기 직접 고치지 말 것.\n_미리보기/\nThumbs.db\n.DS_Store\n`, 'utf8');
-await writeFile(join(배포, 'README.md'),
-`# 웹 게시본 제작기 · 게시본
+/* README.md 는 원본 폴더의 것을 그대로 쓴다 (위 담기 목록에 있음).
+   여기서 덮어쓰지 않는다 — 저장소 첫 화면에 보이는 설명이라 원본 한 곳에서만 고치게 한다. */
+try { await stat(join(배포, 'README.md')); }
+catch {
+  await writeFile(join(배포, 'README.md'),
+`# 웹 게시본 제작기
 
-폴더에 자료를 넣고 \`_메모.txt\` 한 장을 쓰면 웹 페이지를 만들어 주는 도구와, 그걸로 만든 게시본입니다.
+폴더에 자료를 넣으면 주제별로 나눠 웹 페이지로 만들어 주는 도구입니다.
 
 - **게시본 보기** → [통합사이트/](통합사이트/)
-- **제작기 열기** → [제작기.html](제작기.html) (크롬·엣지, 폴더 고르기 → 만들기)
-- 어떻게 만들었나 → [_구상안.md](_구상안.md) · 이어받는 사람을 위한 → [_인수인계서.md](_인수인계서.md)
+- **제작기 열기** → [제작기.html](제작기.html) (크롬·엣지)
 
 이 저장소는 \`_올리기.mjs\` 가 만든 배포 사본입니다. \`공개: 끄기\` 인 게시본은 폴더째 들어 있지 않습니다.
-같은 톤의 도구: [PKEMS 구글 기록장](https://legoschool.github.io/pkems-googlenote/)
 `, 'utf8');
+}
+
+/* 4.5 키가 새지 않았나 — 올리기 전에 배포 사본 전체를 훑는다 (원칙: 공개 저장소에 키를 올리지 않는다) */
+const 텍스트확장자 = /\.(html?|m?js|css|json|md|txt|ya?ml|env|mjs|cjs)$/i;
+const 새는것 = [];
+async function 훑기(곳, 상대 = '') {
+  for (const e of await readdir(곳, { withFileTypes: true })) {
+    if (e.name === '.git' || e.name === 'node_modules') continue;
+    const p = join(곳, e.name), 이름 = 상대 ? 상대 + '/' + e.name : e.name;
+    if (e.isDirectory()) { await 훑기(p, 이름); continue; }
+    if (/^\.?(키|keys?|secret|credentials?)\.(env|json|txt)$/i.test(e.name) || /\.pem$|\.key$/i.test(e.name)) { 새는것.push({ 이름, 무엇: '키 파일처럼 보이는 이름' }); continue; }
+    if (!텍스트확장자.test(e.name)) continue;
+    let 글; try { 글 = await readFile(p, 'utf8'); } catch { continue; }
+    const 걸림 = 키섞였나(글);
+    if (걸림) 새는것.push({ 이름, 무엇: 'API 키처럼 보이는 글자 ' + 걸림.slice(0, 6) + '…' });
+  }
+}
+await 훑기(배포);
+if (새는것.length) {
+  console.error('\n' + 줄);
+  console.error('✋ 멈춥니다 — 배포 사본에 키처럼 보이는 것이 있습니다. 공개 저장소로 올리면 안 됩니다.');
+  for (const s of 새는것) console.error('   ! ' + s.이름 + '  → ' + s.무엇);
+  console.error('   그 파일에서 키를 빼고 (키는 C:\\Users\\<나>\\.pkems\\키.env 에만) 다시 돌리세요.');
+  console.error(줄);
+  process.exitCode = 1;
+  throw new Error('키 유출 위험으로 배포를 멈췄습니다');
+}
 
 /* 5. 표 */
 console.log(줄); console.log('배포 사본: ' + 배포); console.log(줄);
@@ -115,6 +147,7 @@ console.log('넣음:'); for (const s of 넣은) console.log('  + ' + s);
 console.log('뺌:');   for (const s of 뺀) console.log('  - ' + s);
 console.log(줄);
 console.log('게시본 공개 ' + 공개.length + '개 · 비공개 ' + 비공개.length + '개 (비공개는 파일 자체가 올라가지 않습니다)');
+console.log('키 검사: 배포 사본에서 API 키처럼 보이는 것을 찾지 못했습니다.');
 
 /* 6. 푸시 */
 if (푸시) {

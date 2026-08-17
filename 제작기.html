@@ -77,6 +77,110 @@
     <div id="폴더알림"></div>
   </div>
 
+  <!-- 1.4 AI 설정 — 한 곳에서만 정한다. 안 쓰면 안 써도 전부 돌아간다. -->
+  <div id="AI칸" class="숨김">
+    <h2>AI <span class="곁" style="font-weight:400">— 안 써도 모든 기능이 됩니다. 쓰면 몇 가지가 편해집니다</span></h2>
+    <div class="칸">
+      <div class="줄">
+        <label>AI <select id="AI-곳"><option value="">안 씀 (기본)</option></select></label>
+        <span id="AI-상태" class="곁" style="margin:0"></span>
+      </div>
+
+      <div id="AI-키줄" class="숨김" style="margin-top:12px">
+        <div class="줄">
+          <input type="password" id="AI-키" placeholder="API 키" style="flex:1;min-width:260px" autocomplete="off">
+          <button class="작" id="AI-저장">저장</button>
+          <button class="작 연" id="AI-지우기">지우기</button>
+          <a id="AI-키받기" href="#" target="_blank" rel="noopener" class="곁" style="margin:0">키 받으러 가기 ↗</a>
+        </div>
+        <div class="줄" style="margin-top:8px">
+          <span class="곁" style="margin:0">어디에 둘까요</span>
+          <label style="font-size:13.5px"><input type="radio" name="AI-보관" value="창" checked> 이 창에서만</label>
+          <label style="font-size:13.5px"><input type="radio" name="AI-보관" value="브라우저"> 이 브라우저에 기억</label>
+          <label style="font-size:13.5px"><input type="radio" name="AI-보관" value="폴더"> <b>키 폴더에 파일로</b></label>
+        </div>
+      </div>
+
+      <div id="AI-폴더줄" class="숨김" style="margin-top:10px">
+        <div class="줄">
+          <button class="작 연" id="AI-폴더고르기">🔑 키 폴더 고르기</button>
+          <span id="AI-폴더이름" class="곁" style="margin:0"></span>
+        </div>
+        <p class="작은설명" style="margin-top:6px">
+          고른 폴더에 <code>키.env</code> 라는 <b>보통 글 파일</b>로 저장합니다 (메모장으로 열어 고칠 수 있습니다).
+          <b>구글 드라이브 안이나 이 도구 폴더 안은 안 됩니다</b> — 동기화·공개 배포로 새어 나갑니다.
+          권하는 자리: <code>C:\Users\&lt;나&gt;\.pkems</code> (내 계정만 열 수 있게 권한을 걸어 두세요).
+          CLI(<code>node _분류.mjs</code>)도 같은 파일을 읽으므로 한 번만 적어 두면 됩니다.
+        </p>
+      </div>
+
+      <p class="작은설명" id="AI-설명" style="margin-top:10px">
+        AI 는 <b>두 가지</b>에만 씁니다 — ① 자료가 많을 때 <b>주제로 묶고 이름 짓기</b>,
+        ② 말로 적은 방향을 <b>설정 줄로 옮겨 적기</b>.
+        <b>페이지 만들기·디자인·템플릿·배치·게시 사이트는 AI 와 무관합니다.</b>
+      </p>
+      <div id="AI알림"></div>
+    </div>
+  </div>
+
+  <!-- 1.5 자동 구성 — 아무 폴더나 던지면 주제별로 나눠 게시본을 만들어 준다 -->
+  <div id="자동칸" class="숨김">
+    <h2>자동 구성 <span class="곁" style="font-weight:400">— 정리 안 된 폴더에서 게시본을 만들어 냅니다</span></h2>
+
+    <div class="칸">
+      <div class="줄">
+        <button id="자동-폴더">📂 살펴볼 폴더 고르기</button>
+        <span id="자동-폴더이름" class="곁" style="margin:0"></span>
+      </div>
+      <p class="곁" style="margin:12px 0 0">
+        글·사진이 잔뜩 들어 있는 폴더를 고르세요. <b>그 폴더는 읽기만 합니다.</b>
+        만들어지는 것은 작업 폴더의 <code>게시본/</code> 아래에만 들어갑니다.
+      </p>
+      <div id="자동알림"></div>
+    </div>
+
+    <!-- ① 탐색 결과 -->
+    <div id="자동-탐색칸" class="칸 숨김">
+      <div id="자동-요약"></div>
+    </div>
+
+    <!-- ② AI 분류 -->
+    <div id="자동-AI칸" class="칸 숨김">
+      <h3 style="margin:0 0 8px;font-size:16px">② 주제로 묶기</h3>
+      <p class="곁" style="margin:0 0 10px">
+        위 갈래는 낱말 빈도로 거칠게 나눈 것이라 이름이 어색할 수 있습니다.
+        AI 에게 맡기면 제대로 된 주제 이름을 짓고, 어디에도 안 들어간 자료까지 넣어 줍니다.
+      </p>
+      <div class="줄">
+        <button class="작" id="자동-분류">AI 로 묶기</button>
+        <button class="작 연" id="자동-건너뛰기">AI 없이 그대로 쓰기</button>
+        <span id="자동-AI상태" class="곁" style="margin:0"></span>
+      </div>
+      <p class="곁" style="margin:10px 0 0">
+        AI 에 보내는 것은 <b>제목·날짜·앞부분 200자</b>뿐입니다. 본문 전체도, 파일도 보내지 않습니다.
+        키는 맨 위 <b>AI</b> 칸에서 한 번만 정하면 됩니다.
+      </p>
+      <div id="자동-AI알림"></div>
+    </div>
+
+    <!-- ③ 만들 갈래 고르기 -->
+    <div id="자동-갈래칸" class="칸 숨김">
+      <h3 style="margin:0 0 8px;font-size:16px">③ 어떤 갈래를 게시본으로 만들까요</h3>
+      <div id="자동-갈래목록"></div>
+      <div class="줄" style="margin-top:12px">
+        <label style="font-size:13.5px;color:var(--흐린)">갈래마다 최대
+          <input type="number" id="자동-최대건수" value="0" min="0" step="10" style="width:80px"> 건
+          <span class="곁">(0 = 전부)</span></label>
+        <label style="font-size:13.5px;color:var(--흐린)"><input type="checkbox" id="자동-사진없이"> 사진 없이 (빠름)</label>
+      </div>
+      <div class="줄" style="margin-top:10px">
+        <button id="자동-만들기">고른 갈래로 게시본 만들기</button>
+        <span class="곁" style="margin:0">모두 <b>공개: 끄기</b> 로 만들어집니다.</span>
+      </div>
+      <div id="자동-만들알림"></div>
+    </div>
+  </div>
+
   <!-- 2. 게시본 목록 -->
   <div id="목록칸" class="숨김">
     <h2>게시본</h2>
@@ -129,16 +233,33 @@
 
   <!-- 4. AI 해석 (2층) -->
   <div id="해석칸" class="숨김">
-    <h2>메모 아랫단 AI 해석 — <span id="해석대상"></span></h2>
+    <h2>말로 방향 정하기 — <span id="해석대상"></span></h2>
     <div class="칸">
-      <p class="곁" style="margin:0 0 6px">메모 <code>---</code> 아래에 적으신 말을 AI 가 읽어, 윗단 규격(<code>강조: 3</code> 등)으로 옮겨 적자고 <b>제안</b>합니다.
-        파일에 쓰는 건 「적용」을 눌렀을 때뿐입니다. AI 없이도 만들기는 그대로 됩니다.</p>
+      <p class="곁" style="margin:0 0 10px">
+        <b>드롭다운으로 고르는 것과 똑같은 일을, 문장으로 합니다.</b>
+        「사진 위주로 큼직하게, 3주차 글이 제일 중요해」 처럼 적으면 AI 가 읽고
+        <code>사진크기: 크게</code> <code>강조: 3</code> 으로 <b>옮겨 적자고 제안</b>합니다.
+        파일에 쓰는 건 「적용」을 눌렀을 때뿐이고, 본문은 건드리지 않습니다.
+      </p>
+
+      <label style="display:block;font-size:13.5px;color:var(--흐린);margin-bottom:4px">어떻게 만들면 좋을지 말로 적어 주세요</label>
+      <textarea id="해석-말" rows="4" placeholder="예) 사진이 많으니 갤러리로 큼직하게 보여줘. 3번 글이 제일 중요하고, 초안이라고 붙은 건 빼줘. 색은 짙은 남색으로."
+                style="width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid var(--선);border-radius:8px;background:var(--종이);color:var(--글)"></textarea>
+      <p class="작은설명" style="margin:4px 0 10px">
+        여기 적은 말은 <code>_메모.txt</code> 의 <code>---</code> 아래에 저장됩니다.
+        <b>만들어진 페이지에는 나오지 않습니다</b> (보이게 하려면 윗단에 <code>노트공개: 켜기</code>).
+      </p>
+
       <div class="줄">
-        <input type="password" id="해석-키" placeholder="Anthropic API 키 (sk-ant-…)" style="flex:1;min-width:260px">
-        <label style="font-size:13.5px;color:var(--흐린)"><input type="checkbox" id="해석-기억"> 이 브라우저에 기억</label>
-        <button class="작" id="해석-요청">해석 요청</button>
+        <button class="작 연" id="해석-말저장">말만 저장 (AI 안 씀)</button>
+        <button class="작" id="해석-요청">AI 로 옮겨 적기</button>
+        <span id="해석-AI상태" class="곁" style="margin:0"></span>
       </div>
-      <p class="작은설명">키는 이 브라우저 안에만 있고, 요청은 이 컴퓨터에서 api.anthropic.com 으로 바로 갑니다. 보내는 것: 메모 아랫단·자료 제목 목록. 본문은 보내지 않습니다.</p>
+      <p class="작은설명">
+        보내는 것: <b>위에 적은 말 · 자료 제목 목록 · 지금 설정</b>. 본문은 보내지 않습니다.
+        <b>키가 없어도</b> 「말만 저장」 으로 적어 둘 수 있고, 디자인·배치는 드롭다운으로 고르면 됩니다.
+        키는 맨 위 <b>AI</b> 칸에서 정합니다.
+      </p>
       <div id="해석알림"></div>
       <div id="해석결과"></div>
     </div>
@@ -167,9 +288,179 @@
 <script type="module">
 import { 게시본만들기, 메모읽기, 막기, 사진확장정규식, 메모줄쓰기, 메모줄지우기, 손질항목, 배치들 } from './공용/제작.js';
 import { 허브만들기, 요약뽑기 } from './공용/허브.js';
-import { 해석하기 } from './공용/해석.js';
+import { 해석하기알아서, 어디키 } from './공용/해석.js';
+import { 회사들, 키맞나, 키가림, 키글읽기, 키글쓰기, 키들뽑기, 키파일이름 } from './공용/회사.js';
+import { 자료정리, 전체보기, 갈래뽑기, 추천 } from './공용/탐색.js';
+import { 물어보기 as 솔라물어보기, 여럿물어보기 as 솔라여럿 } from './공용/솔라핵심.js';
 
 const $ = s => document.querySelector(s);
+
+/* ═══════════════ AI 설정 — 한 곳에서만 정한다 ═══════════════
+   기본은 「안 씀」. 이 도구의 모든 기능은 AI 없이 돌아간다.
+   AI 는 딱 둘에만 쓴다 — 주제로 묶기 · 말을 설정 줄로 옮겨 적기.
+
+   키 보관 원칙
+     · 기본은 sessionStorage — 창을 닫으면 사라진다.
+     · 「이 브라우저에 기억」 을 켰을 때만 localStorage 에 남는다.
+     · 회사별로 따로 둔다 (업스테이지 키와 앤트로픽 키가 섞이지 않게).
+     · 화면·기록에 키를 그대로 찍지 않는다. 파일에는 절대 쓰지 않는다.
+   브라우저 저장소는 금고가 아니다 — 공용 PC 라면 「기억」 을 켜지 말 것.        */
+const 키칸 = 곳 => 'pkems.키.' + 곳;
+const 보관방식 = () => (document.querySelector('input[name="AI-보관"]:checked') || {}).value || '창';
+
+/* 키 폴더 — 사람이 고른 폴더에 키.env 를 보통 글 파일로 둔다.
+   CLI 도 같은 파일을 읽으므로 한 번만 적어 두면 양쪽에서 쓴다.
+   폴더 손잡이는 IndexedDB 에 담아 두어 다음에 열 때 다시 안 고르게 한다. */
+let 키폴더 = null, 폴더키들 = {};
+
+const 손잡이창고 = {
+  열기(){ return new Promise((되, 안됨) => {
+    const q = indexedDB.open('pkems', 1);
+    q.onupgradeneeded = () => q.result.createObjectStore('손잡이');
+    q.onsuccess = () => 되(q.result); q.onerror = () => 안됨(q.error);
+  }); },
+  async 넣기(값){ const db = await this.열기(); return new Promise(되 => {
+    const t = db.transaction('손잡이','readwrite'); t.objectStore('손잡이').put(값,'키폴더'); t.oncomplete = () => 되(); t.onerror = () => 되(); }); },
+  async 꺼내기(){ const db = await this.열기(); return new Promise(되 => {
+    const t = db.transaction('손잡이','readonly'); const r = t.objectStore('손잡이').get('키폴더');
+    r.onsuccess = () => 되(r.result || null); r.onerror = () => 되(null); }); },
+};
+
+/** 이 폴더에 키를 두어도 되나 — 드라이브 안·도구 폴더 안이면 막는다 */
+async function 키폴더괜찮나(손){
+  if (뿌리손잡이) {
+    try { if (await 손.isSameEntry(뿌리손잡이)) return '이 도구 폴더입니다. 여기 두면 공개 배포로 새어 나갑니다.'; } catch {}
+  }
+  if (/내 드라이브|My Drive|Google ?Drive/i.test(손.name)) return '구글 드라이브 폴더로 보입니다. 동기화되므로 키를 두면 안 됩니다.';
+  return '';
+}
+
+async function 키폴더읽기(){
+  폴더키들 = {};
+  if (!키폴더) return;
+  try {
+    const f = await (await 키폴더.getFileHandle(키파일이름)).getFile();
+    폴더키들 = 키들뽑기(키글읽기(await f.text()));
+  } catch { /* 아직 파일이 없을 뿐 */ }
+}
+async function 키폴더쓰기(){
+  if (!키폴더) throw new Error('키 폴더를 먼저 고르세요.');
+  const fh = await 키폴더.getFileHandle(키파일이름, { create:true });
+  const w = await fh.createWritable();
+  await w.write(키글쓰기(폴더키들, $('#AI-곳').value)); await w.close();
+}
+
+const 키보관 = {
+  고른곳(){ try { return localStorage.getItem('pkems.AI곳') || ''; } catch { return ''; } },
+  고르기(곳){ try { 곳 ? localStorage.setItem('pkems.AI곳', 곳) : localStorage.removeItem('pkems.AI곳'); } catch {} },
+  읽기(곳){
+    if (!곳) return '';
+    if (폴더키들[곳]) return 폴더키들[곳];
+    try { return sessionStorage.getItem(키칸(곳)) || localStorage.getItem(키칸(곳)) || ''; } catch { return ''; }
+  },
+  어디에(곳){
+    if (폴더키들[곳]) return '폴더';
+    try { if (localStorage.getItem(키칸(곳))) return '브라우저'; if (sessionStorage.getItem(키칸(곳))) return '창'; } catch {}
+    return '';
+  },
+  지우기(곳){
+    delete 폴더키들[곳];
+    try { sessionStorage.removeItem(키칸(곳)); localStorage.removeItem(키칸(곳)); } catch {}
+  },
+};
+
+/** 지금 쓸 수 있는 AI */
+function 지금AI(){
+  const 곳 = $('#AI-곳').value;
+  const c = 회사들[곳];
+  return { 곳, 키: 키보관.읽기(곳), 이름: c?.이름 || '', 방식: c?.방식 || '', 주제묶기: !!c?.주제묶기 };
+}
+
+/* 드롭다운은 공용/회사.js 를 보고 채운다 — 회사가 늘면 여기 안 고쳐도 따라 늘어난다 */
+(function AI칸채우기(){
+  const s = $('#AI-곳');
+  for (const [곳, c] of Object.entries(회사들)) {
+    const o = document.createElement('option');
+    o.value = 곳; o.textContent = c.이름 + (c.주제묶기 ? '' : ' (주제 묶기는 아직)');
+    s.appendChild(o);
+  }
+})();
+
+function AI칸그리기(){
+  const 곳 = $('#AI-곳').value, c = 회사들[곳];
+  $('#AI-키줄').classList.toggle('숨김', !c);
+  $('#AI-폴더줄').classList.toggle('숨김', !c || 보관방식() !== '폴더');
+  if (c) {
+    const 키 = 키보관.읽기(곳), 어디 = 키보관.어디에(곳);
+    $('#AI-키').placeholder = 'API 키 (' + c.예 + ')';
+    $('#AI-키').value = 키;
+    $('#AI-키받기').href = c.키받는곳;
+    $('#AI-키받기').textContent = c.이름 + ' 키 받으러 가기 ↗';
+    $('#AI-상태').innerHTML = 키
+      ? '✅ ' + 막기(c.이름) + ' · 키 ' + 막기(키가림(키)) +
+        ' · ' + { 폴더:'키 폴더 파일에 있음', 브라우저:'이 브라우저에 기억됨', 창:'창을 닫으면 사라짐' }[어디 || '창'] +
+        (c.주제묶기 ? '' : ' · <b>주제 묶기는 아직 안 됨</b> (말로 방향 정하기는 가능)')
+      : '키를 넣어 주세요 — 요청은 이 컴퓨터에서 ' + 막기(c.받는곳) + ' 로 바로 갑니다.';
+  } else {
+    $('#AI-상태').innerHTML = 'AI 를 쓰지 않습니다. <b>모든 기능이 그대로 됩니다.</b>';
+  }
+  $('#AI-폴더이름').textContent = 키폴더 ? '🔑 ' + 키폴더.name : '(아직 안 고름)';
+  AI상태알리기();
+}
+function AI상태알리기(){
+  const a = 지금AI();
+  const 글 = a.키 ? '✅ ' + 막기(a.이름) + ' 쓸 준비됨' : '⚪ AI 안 씀 — 맨 위 AI 칸에서 고르면 쓸 수 있습니다';
+  for (const s of ['#자동-AI상태', '#해석-AI상태']) { const e = $(s); if (e) e.innerHTML = 글; }
+}
+
+$('#AI-곳').addEventListener('change', () => { 키보관.고르기($('#AI-곳').value); AI칸그리기(); 알림('#AI알림','',''); });
+for (const r of document.querySelectorAll('input[name="AI-보관"]'))
+  r.addEventListener('change', () => { AI칸그리기(); });
+
+$('#AI-폴더고르기').addEventListener('click', async () => {
+  let 손; try { 손 = await window.showDirectoryPicker({ mode:'readwrite' }); }
+  catch (e) { if (e.name !== 'AbortError') 알림('#AI알림','나쁨','폴더를 열지 못했습니다 — ' + e.name); return; }
+  const 안됨 = await 키폴더괜찮나(손);
+  if (안됨) { 알림('#AI알림','나쁨','이 폴더에는 둘 수 없습니다 — ' + 막기(안됨)); return; }
+  키폴더 = 손;
+  await 손잡이창고.넣기(손);
+  await 키폴더읽기();
+  AI칸그리기();
+  알림('#AI알림','좋음','키 폴더를 정했습니다: <code>' + 막기(손.name) + '</code>' +
+    (Object.keys(폴더키들).length ? ' — 이미 들어 있는 키 ' + Object.keys(폴더키들).map(막기).join(', ') + ' 를 읽었습니다.' : ''));
+});
+
+$('#AI-저장').addEventListener('click', async () => {
+  const 곳 = $('#AI-곳').value, 키 = $('#AI-키').value.trim(), c = 회사들[곳];
+  if (!c) return;
+  if (!키) { 알림('#AI알림','나쁨','키를 넣어 주세요.'); return; }
+  if (!키맞나(곳, 키)) { 알림('#AI알림','나쁨', 막기(c.이름) + ' 키는 <code>' + 막기(c.앞머리) + '</code> 로 시작합니다. 회사를 잘못 고르셨는지 확인해 주세요.'); return; }
+  const 방식 = 보관방식();
+  try {
+    키보관.지우기(곳);                                  // 한 군데에만 두게
+    if (방식 === '폴더') {
+      if (!키폴더) { 알림('#AI알림','나쁨','먼저 「키 폴더 고르기」 를 눌러 주세요.'); return; }
+      폴더키들[곳] = 키; await 키폴더쓰기();
+    } else {
+      sessionStorage.setItem(키칸(곳), 키);
+      if (방식 === '브라우저') localStorage.setItem(키칸(곳), 키);
+    }
+    AI칸그리기();
+    알림('#AI알림','좋음','저장했습니다. ' + {
+      폴더: '<code>' + 막기(키폴더?.name || '') + '\\' + 막기(키파일이름) + '</code> 에 글 파일로 두었습니다. CLI 도 이 파일을 읽습니다.',
+      브라우저: '이 브라우저에 남습니다 — 공용 PC 라면 다 쓰고 「지우기」 를 눌러 주세요.',
+      창: '이 창을 닫으면 사라집니다.',
+    }[방식]);
+  } catch (e) { 알림('#AI알림','나쁨','저장 실패 — ' + 막기(e.message)); }
+});
+
+$('#AI-지우기').addEventListener('click', async () => {
+  const 곳 = $('#AI-곳').value;
+  const 있던곳 = 키보관.어디에(곳);
+  키보관.지우기(곳); $('#AI-키').value = '';
+  try { if (있던곳 === '폴더' && 키폴더) await 키폴더쓰기(); } catch {}
+  AI칸그리기(); 알림('#AI알림','좋음','지웠습니다.' + (있던곳 === '폴더' ? ' 키.env 에서도 뺐습니다.' : ''));
+});
 const 사진확장 = 사진확장정규식;
 const 글확장   = /\.(md|html?|txt|css|json)$/i;
 
@@ -277,7 +568,27 @@ async function 훑어서차리기(){
   알림('#폴더알림','좋음',
     '디자인 ' + 디수 + '가지, 게시본 ' + 게시본들.length + '개를 찾았습니다.' +
     (게시본들.length ? '' : ' <code>게시본/</code> 아래에 폴더를 만들어 자료를 넣어 보세요.'));
+  $('#AI칸').classList.remove('숨김');
+  $('#자동칸').classList.remove('숨김');
+  await 키폴더되살리기();
+  $('#AI-곳').value = 키보관.고른곳();
+  AI칸그리기();
   목록그리기();
+}
+
+/* 전에 고른 키 폴더를 다시 붙인다 — 권한이 살아 있을 때만. 없으면 조용히 넘어간다. */
+async function 키폴더되살리기(){
+  try {
+    const 손 = await 손잡이창고.꺼내기();
+    if (!손) return;
+    const 권한 = await 손.queryPermission({ mode:'readwrite' });
+    if (권한 !== 'granted') {
+      $('#AI-폴더이름').textContent = '🔑 ' + 손.name + ' (권한 확인 필요 — 「키 폴더 고르기」 를 한 번 눌러 주세요)';
+      return;
+    }
+    키폴더 = 손;
+    await 키폴더읽기();
+  } catch {}
 }
 
 /* ---------- 2. 게시본 목록 ---------- */
@@ -667,31 +978,55 @@ $('#손질-새디자인').addEventListener('click', async () => {
    6. AI 해석 (2층) — 메모 아랫단을 윗단 줄로 제안
    ============================================================ */
 let 해석중 = -1, 마지막제안 = null;
-try { const k = localStorage.getItem('게시본제작기.api키'); if (k) { $('#해석-키').value = k; $('#해석-기억').checked = true; } } catch {}
 
 function 해석열기(i){
   해석중 = i;
   const g = 게시본들[i];
   $('#해석칸').classList.remove('숨김');
   $('#해석대상').textContent = g.메모.제목 || g.이름;
-  $('#해석결과').innerHTML = '<pre class="노트">' + 막기(g.메모.노트) + '</pre>';
+  $('#해석-말').value = g.메모.노트 || '';        // 전에 적어 둔 말을 그대로 꺼내 준다
+  $('#해석결과').innerHTML = '';
   알림('#해석알림', '', '');
   $('#해석칸').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
+/* 적은 말을 _메모.txt 아랫단에 저장한다 (AI 없이도 되는 길) */
+async function 말저장(g){
+  const 말 = $('#해석-말').value.trim();
+  const 옛글 = (await 글읽기(g.손잡이, '_메모.txt')) || '';
+  const 윗단 = 옛글.replace(/\r\n/g,'\n').split(/^---\s*$/m)[0].replace(/\s*$/, '\n');
+  await 글쓰기(g.손잡이, '_메모.txt', 윗단 + '\n---\n' + (말 ? 말 + '\n' : ''));
+  g.메모 = 메모읽기(윗단 + '\n---\n' + 말, Object.keys(디자인들));
+}
+
+$('#해석-말저장').addEventListener('click', async () => {
+  if (해석중 < 0) return;
+  try {
+    await 말저장(게시본들[해석중]);
+    알림('#해석알림','좋음','적어 두었습니다. <b>만들어진 페이지에는 나오지 않습니다.</b> ' +
+      '이 말대로 반영하려면 디자인·배치를 직접 고르거나, 키를 넣고 「AI 로 옮겨 적기」 를 누르세요.');
+  } catch (e) { 알림('#해석알림','나쁨','저장 실패 — ' + 막기(e.message)); }
+});
+
 $('#해석-요청').addEventListener('click', async () => {
   if (해석중 < 0) return;
   const g = 게시본들[해석중];
-  const 열쇠 = $('#해석-키').value.trim();
-  if (!열쇠) { 알림('#해석알림','나쁨','API 키를 넣어 주세요. 키가 없으면 메모 윗단에 직접 <code>강조: 3</code> 처럼 적으셔도 됩니다.'); return; }
-  try { if ($('#해석-기억').checked) localStorage.setItem('게시본제작기.api키', 열쇠); else localStorage.removeItem('게시본제작기.api키'); } catch {}
+  const 말 = $('#해석-말').value.trim();
+  if (!말) { 알림('#해석알림','나쁨','어떻게 만들면 좋을지 먼저 적어 주세요.'); return; }
+  const AI = 지금AI();
+  if (!AI.키) {
+    알림('#해석알림','나쁨','AI 를 쓰려면 맨 위 <b>AI</b> 칸에서 회사를 고르고 키를 저장해 주세요.<br>' +
+      '키 없이 하시려면 「말만 저장」 을 누르고, 디자인·배치는 드롭다운으로 고르시면 됩니다.'); return;
+  }
+  const 열쇠 = AI.키;
 
   $('#해석-요청').disabled = true;
-  알림('#해석알림','주의','자료 목록을 읽고 AI 에게 묻는 중… (몇 초 걸립니다)');
+  알림('#해석알림','주의','적으신 말을 저장하고, ' + 막기(AI.이름) + ' 에게 묻는 중… (몇 초 걸립니다)');
   try {
+    await 말저장(g);                               // 물어보기 전에 먼저 적어 둔다 (실패해도 글은 남게)
     const 모음 = await 폴더훑기(g.손잡이);
     const 결과 = 게시본만들기({ 파일들:모음.파일, 폴더명:g.이름, 사진목록:모음.사진, 있는디자인:Object.keys(디자인들) });
-    const 제안 = await 해석하기({ 노트:결과.메모.노트, 자료들:결과.자료들, 메모:결과.메모, 열쇠, 브라우저:true });
+    const 제안 = await 해석하기알아서({ 노트:말, 자료들:결과.자료들, 메모:결과.메모, 열쇠, 브라우저:true });
     마지막제안 = 제안;
     제안그리기(g, 제안);
     알림('#해석알림', 제안.줄.length ? '좋음' : '주의',
@@ -723,6 +1058,354 @@ function 제안그리기(g, 제안){
       알림('#해석알림','좋음', 고른.length + '줄을 적었습니다. 「만들기」 를 누르면 반영됩니다.');
     } catch (e) { 알림('#해석알림','나쁨','적용 실패 — ' + e.name); }
   });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   자동 구성 — 정리 안 된 폴더 → 탐색 → (AI) 분류 → 게시본 폴더들
+
+   CLI 의 _탐색.mjs · _분류.mjs · _재구성.mjs 와 **같은 공용 코드**를 쓴다
+   (공용/탐색.js · 공용/솔라핵심.js). 그래서 결과가 서로 어긋나지 않는다.
+   원본 폴더는 읽기만 한다. 쓰는 곳은 작업 폴더의 게시본/ 아래뿐.        ═══ */
+
+let 살필손잡이 = null;      // 살펴볼 폴더 (읽기만)
+let 자동자료들 = [];         // 자료정리() 결과
+let 자동손잡이표 = {};       // 상대경로 → 파일 손잡이 (재구성 때 실제로 읽어 옮긴다)
+let 자동모양 = null, 자동갈래 = [], 자동미분류 = [];
+
+const 건너뛸폴더 = /^([_.]|node_modules$|사진$|images$|그림$|img$|assets$)/i;
+const 셀확장 = /\.(md|txt|html?|jpg|jpeg|png|gif|webp|bmp|avif|svg|pdf|pptx?|docx?|xlsx?|hwpx?|zip)$/i;
+const 읽을확장 = /\.(md|txt|html?)$/i;
+
+/* ---------- ① 폴더 고르기 + 탐색 ---------- */
+$('#자동-폴더').addEventListener('click', async () => {
+  let 손잡이;
+  try { 손잡이 = await window.showDirectoryPicker({ mode:'read' }); }
+  catch (e) { if (e.name !== 'AbortError') 알림('#자동알림','나쁨','폴더를 열지 못했습니다 — ' + e.name); return; }
+  살필손잡이 = 손잡이;
+  $('#자동-폴더이름').textContent = '📂 ' + 손잡이.name;
+  await 자동탐색();
+});
+
+async function 자동탐색(){
+  알림('#자동알림','주의','폴더를 읽는 중입니다… (자료가 많으면 시간이 걸립니다)');
+  자동자료들 = []; 자동손잡이표 = {};
+  const 못읽음 = [];
+
+  const 찾기 = async (폴더, 지금 = '', 깊이 = 0) => {
+    if (깊이 > 6) return;
+    let 항목;
+    try { 항목 = 폴더.entries(); } catch (e) { 못읽음.push({ 이름: 지금 || '.', 까닭: e.name }); return; }
+    for await (const [이름, 것] of 항목) {
+      const 상대 = 지금 ? 지금 + '/' + 이름 : 이름;
+      if (것.kind === 'directory') { if (!건너뛸폴더.test(이름)) await 찾기(것, 상대, 깊이 + 1); continue; }
+      if (/^[_.]/.test(이름) || !셀확장.test(이름)) continue;
+      자동손잡이표[상대] = 것;
+      let 글 = '', 크기 = 0;
+      try { const f = await 것.getFile(); 크기 = f.size; if (읽을확장.test(이름)) 글 = await f.text(); }
+      catch (e) { 못읽음.push({ 이름: 상대, 까닭: e.name }); continue; }
+      자동자료들.push(자료정리({ 이름: 상대, 글, 크기 }, 자동자료들.length));
+      if (자동자료들.length % 50 === 0)
+        알림('#자동알림','주의','폴더를 읽는 중입니다… ' + 자동자료들.length + '건');
+    }
+  };
+  await 찾기(살필손잡이);
+
+  if (!자동자료들.length) {
+    알림('#자동알림','나쁨','읽을 자료를 찾지 못했습니다. 글(.md·.txt·.html)이나 사진이 든 폴더인지 확인해 주세요.');
+    $('#자동-탐색칸').classList.add('숨김'); $('#자동-AI칸').classList.add('숨김'); $('#자동-갈래칸').classList.add('숨김');
+    return;
+  }
+
+  자동모양 = 전체보기(자동자료들);
+  const 거친 = 갈래뽑기(자동자료들);
+  자동갈래 = 거친.갈래.map(g => ({ ...g, AI:false }));
+  자동미분류 = 거친.미분류;
+
+  알림('#자동알림','좋음', '자료 ' + 자동자료들.length + '건을 읽었습니다.' +
+    (못읽음.length ? ' <b>못 읽은 것 ' + 못읽음.length + '건</b> 은 건너뛰었습니다.' : ''));
+  자동요약그리기(못읽음);
+  $('#자동-AI칸').classList.remove('숨김');
+  자동갈래그리기();
+}
+
+function 자동요약그리기(못읽음 = []){
+  const m = 자동모양;
+  const 추 = 추천(m, Object.keys(디자인들));
+  $('#자동-탐색칸').classList.remove('숨김');
+  $('#자동-요약').innerHTML =
+    '<h3 style="margin:0 0 10px;font-size:16px">① 이 폴더에 무엇이 있나</h3>' +
+    '<div class="줄" style="gap:18px;flex-wrap:wrap;margin-bottom:10px">' +
+      숫자칸(m.자료수,'자료') + 숫자칸(m.글수,'글') + 숫자칸(m.사진합,'사진') +
+      숫자칸(m.해수,'해에 걸쳐') + 숫자칸(m.글자수가운데.toLocaleString(),'글자(가운데값)') +
+    '</div>' +
+    '<p class="곁" style="margin:0 0 6px">' +
+      막기(m.처음날짜 || '날짜모름') + ' ~ ' + 막기(m.끝날짜 || '날짜모름') +
+      ' · 짧은 글 ' + m.짧은글수 + '건 · 긴 글 ' + m.긴글수 + '건' +
+      (못읽음.length ? ' · <b>못 읽음 ' + 못읽음.length + '건</b>' : '') + '</p>' +
+    '<p class="곁" style="margin:0"><b>이 자료엔 이런 옷이 맞습니다</b> — 디자인 <b>' + 막기(추.디자인) +
+      '</b> · 배치 <b>' + 막기(추.배치) + '</b> · 접기 ' + 막기(추.접기) + ' · 순서 ' + 막기(추.순서) +
+      '<br>왜 ' + 막기(추.배치) + '? ' + 추.배치까닭.map(막기).join(' / ') + '</p>';
+}
+function 숫자칸(값, 이름){
+  return '<span style="text-align:center"><b style="display:block;font-size:22px;color:var(--강조);line-height:1.2">' +
+    막기(값) + '</b><span class="곁" style="margin:0;font-size:12px">' + 막기(이름) + '</span></span>';
+}
+
+/* ---------- ② AI 로 묶기 ---------- */
+$('#자동-건너뛰기').addEventListener('click', () => {
+  알림('#자동-AI알림','주의','낱말로 나눈 갈래를 그대로 씁니다. 이름이 어색하면 만든 뒤 <code>_메모.txt</code> 의 <code>제목:</code> 을 고치면 됩니다.');
+  자동갈래그리기();
+});
+
+$('#자동-분류').addEventListener('click', async () => {
+  const AI = 지금AI();
+  if (!AI.키) {
+    알림('#자동-AI알림','나쁨','AI 를 쓰려면 맨 위 <b>AI</b> 칸에서 회사를 고르고 키를 저장해 주세요.<br>' +
+      '키 없이 하시려면 「AI 없이 그대로 쓰기」 를 누르면 됩니다 — 갈래 이름만 투박할 뿐, 나머지는 똑같습니다.'); return;
+  }
+  if (!AI.주제묶기) {
+    // 조용히 실패하지 않는다 (원칙 6).
+    const 되는곳 = Object.values(회사들).filter(c => c.주제묶기).map(c => c.이름).join(' · ');
+    알림('#자동-AI알림','나쁨',
+      '<b>주제 묶기는 아직 ' + 막기(되는곳) + ' 만 됩니다.</b> (' + 막기(AI.이름) + ' 은 「말로 방향 정하기」 에서 쓸 수 있습니다)<br>' +
+      '맨 위 AI 칸에서 바꾸시거나, 「AI 없이 그대로 쓰기」 를 누르세요.'); return;
+  }
+  const 키 = AI.키;
+  const 바탕 = 회사들[AI.곳].바탕, 모델 = 회사들[AI.곳].모델;
+
+  const 단추 = $('#자동-분류'); 단추.disabled = true;
+  const 말 = 글 => 알림('#자동-AI알림','주의', 글);
+  try {
+    말('① 어떤 주제로 나눌지 정하는 중…');
+    const 씨앗 = 자동갈래.map(g => g.이름 + '(' + g.건수 + '건)').join(', ');
+    const 표본 = 고르게뽑기(자동자료들, 90).map(a => '- ' + (a.날짜 || '날짜모름') + ' | ' + a.제목).join('\n');
+
+    const 갈래판 = await 솔라물어보기({
+      키, 바탕, 모델, 조용히:true,
+      체계: '너는 한 사람이 오래 모아 온 기록을 주제별로 정리해 주는 사서다.\n' +
+            '- 이름은 자료에 실제로 나오는 말로 짓는다. 2~12글자 명사구.\n' +
+            '- 6~10개로 나눈다. 서로 겹치지 않게 한다.\n' +
+            '- "기타"는 만들지 않는다. 없는 내용을 지어내지 않는다.\n반드시 JSON 하나만 답한다.',
+      물음: '아래는 어떤 사람이 모아 온 기록 ' + 자동모양.자료수 + '건이다.\n\n' +
+            '[낱말로 거칠게 묶어 본 결과 — 참고만. 이름이 어색한 것이 섞여 있다]\n' + 씨앗 +
+            '\n\n[실제 제목 표본]\n' + 표본 + '\n\n이 기록을 어떤 주제로 나누면 좋을지 갈래를 정하라.',
+      스키마: { type:'object', additionalProperties:false, required:['갈래'], properties:{ 갈래:{ type:'array', items:{
+        type:'object', additionalProperties:false, required:['이름','설명','알아보는법'],
+        properties:{ 이름:{type:'string'}, 설명:{type:'string'}, 알아보는법:{type:'string'} } } } } },
+      최대토큰: 2000,
+    });
+    const 정의 = 갈래판.값.갈래;
+    말('갈래 ' + 정의.length + '개: ' + 정의.map(g => 막기(g.이름)).join(' · ') + '<br>② 자료를 넣는 중…');
+
+    const 이름들 = 정의.map(g => g.이름);
+    const 설명 = 정의.map(g => '- ' + g.이름 + ': ' + g.설명 + ' (' + g.알아보는법 + ')').join('\n');
+    const 배정스키마 = { type:'object', additionalProperties:false, required:['배정'], properties:{ 배정:{ type:'array', items:{
+      type:'object', additionalProperties:false, required:['번호','갈래','확신'],
+      properties:{ 번호:{type:'integer'}, 갈래:{type:'string', enum:[...이름들,'모르겠음']}, 확신:{type:'string', enum:['높음','보통','낮음']} } } } } };
+
+    const 묶음들 = [];
+    for (let i = 0; i < 자동자료들.length; i += 40) 묶음들.push(자동자료들.slice(i, i + 40));
+
+    const { 결과, 못한것 } = await 솔라여럿(묶음들, (묶) => ({
+      키, 바탕, 모델, 스키마: 배정스키마, 최대토큰: Math.min(8000, 묶.length * 70 + 500),
+      체계: '너는 자료를 정해진 갈래에 넣는 사서다. 주어진 갈래 이름만 쓴다.\n' +
+            '어느 쪽도 아니면 "모르겠음"을 쓴다 — 억지로 넣지 마라.\n' +
+            '받은 번호를 하나도 빠뜨리지 않는다. 반드시 JSON 하나만 답한다.',
+      물음: '[갈래]\n' + 설명 + '\n\n[자료 ' + 묶.length + '건]\n' +
+            묶.map(a => a.번호 + '. [' + (a.날짜 || '날짜모름') + '] ' + a.제목 + '\n   ' +
+                        (a.발췌 || '').slice(0,200).replace(/\n/g,' ')).join('\n') +
+            '\n\n각 자료를 갈래에 넣어라. 받은 번호 ' + 묶.length + '개 전부에 답하라.',
+    }), {
+      동시: 2,
+      알림: (센것, 전체, 실패수, 무엇) =>
+        말('② 자료를 넣는 중… ' + 센것 + '/' + 전체 + ' 묶음' +
+           (실패수 ? ' · 실패 ' + 실패수 : '') + (무엇 ? ' · ' + 무엇 : '')),
+    });
+
+    const 배정 = new Map();
+    let 들어감 = 갈래판.쓴토큰.들어감, 나옴 = 갈래판.쓴토큰.나옴;
+    for (const r of 결과) { if (!r) continue; 들어감 += r.쓴토큰.들어감; 나옴 += r.쓴토큰.나옴;
+      for (const b of (r.값?.배정 || [])) if (Number.isInteger(b.번호)) 배정.set(b.번호, b); }
+
+    const 담을곳 = new Map(이름들.map(n => [n, []]));
+    자동미분류 = [];
+    for (const a of 자동자료들) {
+      const b = 배정.get(a.번호);
+      if (b && 담을곳.has(b.갈래)) 담을곳.get(b.갈래).push(a.번호); else 자동미분류.push(a.번호);
+    }
+    자동갈래 = 정의.map(g => ({
+      이름: g.이름, 설명: g.설명, 알아보는법: g.알아보는법,
+      자료번호: 담을곳.get(g.이름) || [], 건수: (담을곳.get(g.이름) || []).length,
+      까닭: g.설명, 곁낱말: [], AI: true,
+    })).filter(g => g.건수 > 0).sort((a,b) => b.건수 - a.건수);
+
+    알림('#자동-AI알림','좋음',
+      '갈래 ' + 자동갈래.length + '개로 묶었습니다. 모르겠음 ' + 자동미분류.length + '건.' +
+      (못한것.length ? ' <b>실패한 묶음 ' + 못한것.length + '개</b> — 그만큼은 모르겠음으로 갔습니다.' : '') +
+      ' <span class="곁">토큰 들어감 ' + 들어감.toLocaleString() + ' · 나옴 ' + 나옴.toLocaleString() + '</span>');
+    자동갈래그리기();
+  } catch (e) {
+    알림('#자동-AI알림','나쁨','AI 분류 실패 — ' + 막기(e.message));
+  } finally { 단추.disabled = false; }
+});
+
+function 고르게뽑기(것들, 몇개){
+  if (것들.length <= 몇개) return 것들;
+  const 걸음 = 것들.length / 몇개;
+  return Array.from({ length: 몇개 }, (_, i) => 것들[Math.floor(i * 걸음)]);
+}
+
+/* ---------- ③ 갈래 고르기 ---------- */
+function 자동갈래그리기(){
+  $('#자동-갈래칸').classList.remove('숨김');
+  const 자료찾기 = new Map(자동자료들.map(a => [a.번호, a]));
+  $('#자동-갈래목록').innerHTML = 자동갈래.map((g, i) => {
+    const 것들 = g.자료번호.map(n => 자료찾기.get(n)).filter(Boolean);
+    const 추 = 추천(전체보기(것들), Object.keys(디자인들));
+    return '<label style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--선)">' +
+      '<input type="checkbox" class="자동-갈래고름" data-i="' + i + '" checked style="margin-top:4px">' +
+      '<span style="flex:1"><b>' + 막기(g.이름) + '</b> <span class="곁">' + g.건수 + '건 → ' +
+        막기(추.디자인) + ' / ' + 막기(추.배치) + '</span>' +
+        (g.설명 ? '<br><span class="곁" style="margin:0">' + 막기(g.설명) + '</span>' : '') +
+        '<br><span class="곁" style="margin:0;font-size:12px">' +
+          것들.slice(0,3).map(a => 막기(a.제목)).join(' · ') + (것들.length > 3 ? ' …' : '') +
+        '</span></span></label>';
+  }).join('') +
+  (자동미분류.length
+    ? '<p class="곁" style="margin:10px 0 0">어디에도 안 들어간 자료 <b>' + 자동미분류.length +
+      '건</b> 은 게시본으로 만들지 않습니다.</p>' : '');
+}
+
+/* ---------- ④ 게시본 만들기 ---------- */
+$('#자동-만들기').addEventListener('click', async () => {
+  const 고른 = [...document.querySelectorAll('.자동-갈래고름')].filter(c => c.checked).map(c => 자동갈래[+c.dataset.i]);
+  if (!고른.length) { 알림('#자동-만들알림','나쁨','만들 갈래를 하나 이상 골라 주세요.'); return; }
+  if (!뿌리손잡이) { 알림('#자동-만들알림','나쁨','먼저 맨 위에서 작업 폴더를 골라 주세요.'); return; }
+
+  const 최대건수 = Math.max(0, +$('#자동-최대건수').value || 0);
+  const 사진없이 = $('#자동-사진없이').checked;
+  const 단추 = $('#자동-만들기'); 단추.disabled = true;
+  const 자료찾기 = new Map(자동자료들.map(a => [a.번호, a]));
+  const 표 = [];
+
+  try {
+    const 게폴더 = await 하위폴더(뿌리손잡이, '게시본', true);
+    for (const g of 고른) {
+      let 것들 = g.자료번호.map(n => 자료찾기.get(n)).filter(Boolean);
+      것들.sort((a,b) => (a.날짜 || '9999').localeCompare(b.날짜 || '9999'));
+      const 원래수 = 것들.length;
+      if (최대건수 && 것들.length > 최대건수) 것들 = 것들.slice(-최대건수);
+
+      const 폴더명 = 폴더이름으로(g.이름);
+      알림('#자동-만들알림','주의','「' + 막기(g.이름) + '」 만드는 중… 0/' + 것들.length);
+
+      // 이미 있으면 건드리지 않는다
+      let 있나 = false;
+      try { await 게폴더.getDirectoryHandle(폴더명); 있나 = true; } catch {}
+      if (있나) { 표.push({ 이름:g.이름, 건수:0, 원래수, 건너뜀:'같은 이름 폴더가 이미 있어 건드리지 않았습니다' }); continue; }
+
+      const 곳 = await 게폴더.getDirectoryHandle(폴더명, { create:true });
+      let 번 = 0, 사진수 = 0, 못읽음 = 0;
+      for (const 자 of 것들) {
+        번++;
+        const 손 = 자동손잡이표[자.파일];
+        let 글; try { 글 = await (await 손.getFile()).text(); } catch { 못읽음++; continue; }
+        const 글이름 = 자.파일.split('/').pop().replace(/\.[^.]+$/, '');
+        const { 새글, 담을것 } = 사진없이 ? { 새글: 글.replace(/<img[^>]*>/gi,''), 담을것: [] }
+                                          : 사진잇기(글, 글이름);
+        for (const s of 담을것) {
+          const 손2 = 자동손잡이표[s.원본];
+          if (!손2) continue;
+          try {
+            const 사진폴더 = await (await 곳.getDirectoryHandle('사진', { create:true }))
+                              .getDirectoryHandle(글이름, { create:true });
+            const fh = await 사진폴더.getFileHandle(s.이름, { create:true });
+            const w = await fh.createWritable(); await w.write(await 손2.getFile()); await w.close();
+            사진수++;
+          } catch {}
+        }
+        await 글쓰기(곳, String(번).padStart(3,'0') + '_' + 파일이름으로(자.제목) + '.html', 새글);
+        if (번 % 10 === 0) 알림('#자동-만들알림','주의','「' + 막기(g.이름) + '」 만드는 중… ' + 번 + '/' + 것들.length);
+      }
+
+      const 모양 = 전체보기(것들);
+      const 추 = 추천(모양, Object.keys(디자인들));
+      await 글쓰기(곳, '_메모.txt', 메모글만들기(g, 것들, 추, 모양));
+      표.push({ 이름:g.이름, 건수:번, 원래수, 사진:사진수, 못읽음, 디자인:추.디자인, 배치:추.배치 });
+    }
+
+    알림('#자동-만들알림','좋음',
+      '<b>다 만들었습니다.</b><br>' +
+      표.map(r => '· <b>' + 막기(r.이름) + '</b> — ' +
+        (r.건너뜀 ? '<span class="곁">' + 막기(r.건너뜀) + '</span>'
+                  : r.건수 + '건' + (r.원래수 !== r.건수 ? '(전체 ' + r.원래수 + ')' : '') +
+                    ' · 사진 ' + r.사진 + '장 · ' + 막기(r.디자인) + '/' + 막기(r.배치) +
+                    (r.못읽음 ? ' · <b>못 읽음 ' + r.못읽음 + '건</b>' : ''))).join('<br>') +
+      '<br><br>모두 <b>공개: 끄기</b> 입니다. 아래 목록에서 내용을 보고 공개할 것만 켜세요.');
+    await 훑어서차리기();
+  } catch (e) {
+    알림('#자동-만들알림','나쁨','만들기 실패 — ' + 막기(e.message));
+  } finally { 단추.disabled = false; }
+});
+
+/* 글 안의 사진 경로를 게시본 안쪽(사진/<글이름>/)으로 바꾸고, 옮길 사진 목록을 돌려준다.
+   원래 경로가 깨져 있어도(폴더 이름이 바뀌는 일이 잦다) 파일 이름으로 찾아 낸다. */
+function 사진잇기(글, 글이름){
+  const 담을것 = [], 본것 = new Set();
+  const 새글 = 글.replace(/(<img[^>]+src=)(["'])([^"']+)\2/gi, (전체, 앞, 따옴, 주소) => {
+    if (/^(https?:|data:)/i.test(주소)) return 전체;
+    const 파일 = decodeURIComponent(주소.split('/').pop());
+    const 조각 = 주소.split('/').filter(Boolean);
+    const 안이름 = 조각.length >= 2 ? decodeURIComponent(조각[조각.length - 2]) : 글이름;
+    const 찾은 = 사진찾기(안이름, 파일) || 사진찾기(글이름, 파일);
+    if (!찾은) return 전체;
+    if (!본것.has(파일)) { 본것.add(파일); 담을것.push({ 이름: 파일, 원본: 찾은 }); }
+    return 앞 + 따옴 + '사진/' + 글이름 + '/' + 파일 + 따옴;
+  });
+  return { 새글, 담을것 };
+}
+let 사진색인 = null;
+function 사진찾기(폴더이름, 파일){
+  if (!사진색인) {                       // 파일이름 → 상대경로들 (한 번만 만든다)
+    사진색인 = new Map();
+    for (const 상대 of Object.keys(자동손잡이표)) {
+      const 바닥 = 상대.split('/').pop();
+      if (!사진색인.has(바닥)) 사진색인.set(바닥, []);
+      사진색인.get(바닥).push(상대);
+    }
+  }
+  const 것들 = 사진색인.get(파일);
+  if (!것들 || !것들.length) return null;
+  if (것들.length === 1) return 것들[0];
+  return 것들.find(p => p.includes(폴더이름)) || null;   // 여럿이면 폴더 이름이 맞는 것만 (아니면 안 붙임)
+}
+
+function 폴더이름으로(s){ return String(s).replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,'-').slice(0,40) || '갈래'; }
+function 파일이름으로(s){ return String(s).replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,'_').slice(0,60) || '글'; }
+
+function 메모글만들기(갈래, 것들, 추, 모양){
+  const 처음 = 것들[0]?.날짜 || '', 끝 = 것들[것들.length-1]?.날짜 || '';
+  const 기간 = 처음 && 끝 ? 처음.slice(0,7) + ' ~ ' + 끝.slice(0,7) : '';
+  // 설명은 '#' 주석으로. 아랫단(---)에 넣으면 만들어진 페이지에 「제작 노트」 로 새어 나간다.
+  return '제목: ' + 갈래.이름 + '\n' +
+    '부제: ' + (갈래.설명 || '').replace(/\n/g,' ') + (기간 ? ' · ' + 기간 : '') + '\n\n' +
+    '디자인: ' + 추.디자인 + '\n배치: ' + 추.배치 + '\n접기: ' + 추.접기 + '\n' +
+    '순서: ' + 추.순서 + '\n사진크기: ' + 추.사진크기 + '\n공개: 끄기\n\n' +
+    '# ─────────────────────────────────────────────────────────────\n' +
+    '# 이 폴더는 제작기의 「자동 구성」 이 만들었습니다.\n' +
+    "# '#' 로 시작하는 줄은 도구가 읽지 않고, 만들어진 페이지에도 나오지 않습니다.\n#\n" +
+    '# 왜 이 옷을 골랐나\n' +
+    '# - 디자인 ' + 추.디자인 + ': ' + 추.디자인까닭 + '\n' +
+    '# - 배치 ' + 추.배치 + ': ' + 추.배치까닭.join(' / ') + '\n' +
+    '# - 접기 ' + 추.접기 + ': ' + 추.접기까닭 + '\n' +
+    '# - 순서 ' + 추.순서 + ': ' + 추.순서까닭 + '\n#\n' +
+    '# 무엇이 들어 있나\n' +
+    '# - 자료 ' + 모양.자료수 + '건 · 사진 ' + 모양.사진합 + '장' + (기간 ? ' · ' + 기간 : '') + '\n' +
+    '# - 짧은 글 ' + 모양.짧은글수 + '건 · 긴 글 ' + 모양.긴글수 + '건 · 글 길이 가운데값 ' + 모양.글자수가운데 + '자\n' +
+    (갈래.알아보는법 ? '# - 묶은 기준: ' + 갈래.알아보는법 + '\n' : '') + '#\n' +
+    '# 고치고 싶으면 윗단의 줄을 고치고 다시 만들면 됩니다.\n' +
+    '# 공개하려면 「공개: 켜기」 로 바꾸세요. 지금은 아무에게도 보이지 않습니다.\n' +
+    '# ─────────────────────────────────────────────────────────────\n\n---\n';
 }
 </script>
 </body>
