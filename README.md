@@ -6,8 +6,9 @@
 어디에 뭐가 있는지도 모르는 폴더를 던지면, 무엇이 있는지 세어 보여 주고,
 주제별로 나누고, 어울리는 디자인을 골라 **웹 페이지와 게시 사이트로 만들어 줍니다.**
 
-- 🔗 **[만들어진 사이트 보기](https://legoschool.github.io/pkems-publisher/)**
-- 🔗 **[제작기 열기](https://legoschool.github.io/pkems-publisher/제작기.html)** (크롬·엣지)
+- 🔗 **[만들어진 페이지 예시](https://legoschool.github.io/pkos-publisher/%EA%B2%8C%EC%8B%9C%EB%B3%B8/%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5-%EC%88%98%EC%97%85/)**
+- 🔗 **[제작기 열기](https://legoschool.github.io/pkos-publisher/%EC%A0%9C%EC%9E%91%EA%B8%B0.html)** (크롬·엣지)
+- 🔗 **[화면 사진으로 따라 하기](https://legoschool.github.io/pkos-workshop/#b09)** — PKOS 도구 모음의 사이트 만들기 블록
 
 > **설치할 것이 없습니다.** 서버도, 회원가입도, 구글 로그인도 없습니다.
 > 웹 페이지 하나가 당신 컴퓨터의 폴더를 직접 읽고 씁니다.
@@ -41,7 +42,7 @@
 
 ### ① 열기
 
-[제작기](https://legoschool.github.io/pkems-publisher/제작기.html)를 크롬이나 엣지로 엽니다.
+이 저장소를 「Code → Download ZIP」으로 받아 압축을 풉니다. 그다음 [제작기](https://legoschool.github.io/pkos-publisher/%EC%A0%9C%EC%9E%91%EA%B8%B0.html)를 크롬이나 엣지로 엽니다.
 
 ### ② 작업 폴더 고르기
 
@@ -278,6 +279,6 @@ node _시험/솔라시험.mjs    # AI 연결 확인
 ## 라이선스 · 만든 이
 
 개인 지식·경험 관리 체계(P-KEMS)의 한 부분으로 만들었습니다.
-같은 톤의 도구: [PKEMS 구글 기록장](https://legoschool.github.io/pkems-googlenote/)
+함께 쓰는 도구: [PKOS 도구 모음](https://legoschool.github.io/pkos-workshop/) — 기록장 · 변환기 · 사이트 만들기
 
 `디자인/브릭마을` 은 외부에서 받은 kit 이라 라이선스가 분명해질 때까지 배포본에서 빠져 있습니다.
